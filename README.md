@@ -106,7 +106,6 @@ Install or create the following before running the project:
 ## Install
 
 ```bash
-cd /Users/kchresfield/code/space-app-demo
 npm install
 cp .env.example .env
 ```
