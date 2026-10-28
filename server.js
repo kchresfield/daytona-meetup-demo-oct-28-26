@@ -11,7 +11,20 @@ tac.registerChannel(new SMSChannel(tac, { memoryMode: "always" }));
 
 tac.onMessageReady(async ({ conversationId, message, memory, session, channel }) => {
   console.log(`[${channel}] ${message}`);
-  return handleAgentMessage(message, { conversationId, memory, session, channel });
+  const response = await fetch("https://your-n8n-instance.com/webhook/field-shift", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      conversationId,
+      message,
+      memory,       // Durable identity traits from Twilio
+      session,      // Twilio session metadata
+      channel,
+    }),
+  });
+
+  const data = await response.json();
+  return data.reply;
 });
 
 await new TACServer(tac, {
